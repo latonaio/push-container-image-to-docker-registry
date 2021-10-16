@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: push-container-image-to-docker-registry
+  name: push-container-image-to-docker-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: push-container-image-to-docker-registry
+  strategy:
+    rollingUpdate:
+  template:
+    metadata:
+      labels:
+        run: push-container-image-to-docker-registry
+    spec:
+      hostname: push-container-image-to-docker-registry
+      containers:
+      - image: push-container-image-to-docker-registry:latest
+        name: push-container-image-to-docker-registry
+        ports:
+        - containerPort: 12001
+          protocol: TCP
+        imagePullPolicy: IfNotPresent
+        resources: {}
+        volumeMounts: 
+        - name: data
+          mountPath: /var/lib/aion/Data
+        - name: docker
+          mountPath: /var/run/docker.sock
+      volumes: 
+      - name: data
+        hostPath:
+          path: /home/latona/prometheus/Data
+      - name: docker
+        hostPath:
+          path: /var/run/docker.sock
+status: {}
+
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      run: push-container-image-to-docker-registry
+    name: push-container-image-to-docker-registry
+  spec:
+    ports:
+    - port: 12001
+      protocol: TCP
+      targetPort: 12001
+    selector:
+      run: push-container-image-to-docker-registry
+    type: ClusterIP
+  status:
+   loadBalancer: {}
+---
+
