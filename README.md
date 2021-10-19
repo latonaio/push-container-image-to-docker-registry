@@ -9,6 +9,6 @@ push-container-image-to-docker-registry は、エッジコンピューティン�
 push-container-image-to-docker-registry は、AION のプラットフォーム上での動作を前提としています。   
 使用する際は、事前に下記の通り AION の動作環境を用意してください。  
 ・ Kubernetes  
-・ AION のリソース  
+・ [AION](https://github.com/latonaio/aion-core) のリソース  
 
 
